@@ -12,6 +12,8 @@ struct DefaultParameters {
 
     // Minimum length for a sequence to be outputted.
     size_t min_sequence_length{5};
+    int32_t slow5_threads{8};
+    int64_t slow5_batchsize{4000};
 };
 
 static const DefaultParameters default_parameters{};

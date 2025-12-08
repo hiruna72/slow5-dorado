@@ -3,7 +3,7 @@ set(CMAKE_POLICY_DEFAULT_CMP0063 NEW)
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(CMAKE_POLICY_DEFAULT_CMP0091 NEW)
 
-project(dorado LANGUAGES C CXX)
+project(slow5-dorado LANGUAGES C CXX)
 if(APPLE)
   enable_language(OBJC OBJCXX)
 endif()
@@ -90,7 +90,7 @@ include(cmake/DownloadAndExtract.cmake)
 include(cmake/SharedLibHelpers.cmake)
 include(cmake/DoradoTarget.cmake)
 include(cmake/DoradoCheckDeps.cmake)
-
+include(cmake/Slow5.cmake)
 # Add sanitizer options to compilation flags
 include(cmake/ECMEnableSanitizers.cmake)
 if (ECM_ENABLE_SANITIZERS)

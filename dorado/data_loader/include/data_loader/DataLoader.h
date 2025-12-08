@@ -15,6 +15,9 @@
 #include <unordered_set>
 #include <vector>
 
+struct Pod5FileReader;
+struct slow5_file;
+
 namespace dorado {
 class Pipeline;
 class ReadCommon;
@@ -40,7 +43,9 @@ public:
                size_t num_worker_threads,
                size_t max_reads,
                std::optional<std::unordered_set<std::string>> read_list,
-               std::unordered_set<std::string> read_ignore_list);
+               std::unordered_set<std::string> read_ignore_list,
+               int32_t slow5_threads = 8,
+               int64_t slow5_batchsize = 4000);
     ~DataLoader() = default;
 
     void load_reads(const InputFiles& input_files, ReadOrder traversal_order);
@@ -64,7 +69,11 @@ private:
     void load_pod5_reads_from_file(const std::string& path);
     void load_pod5_reads_from_file_by_read_ids(const std::string& path,
                                                const std::vector<ReadID>& read_ids);
+    void load_slow5_reads_from_file(const std::string& path);
+    // Use the forward-declared opaque pointer instead of slow5_file_t*
+    void load_slow5_reads_from_file_by_read_ids(::slow5_file* sp, const std::vector<ReadID>& read_ids);
     void load_read_channels(const std::vector<std::filesystem::directory_entry>& files);
+    void load_read_channels_slow5(::slow5_file* sp, const std::string& file_path);
 
     void load_reads_by_channel(const std::vector<std::filesystem::directory_entry>& files);
     void load_reads_unrestricted(const std::vector<std::filesystem::directory_entry>& files);
@@ -91,6 +100,10 @@ private:
     void check_read(const SimplexReadPtr& read);
     // A flag to warn only once if the data chemsitry is known
     std::atomic<bool> m_log_unknown_chemistry{true};
+
+    int32_t slow5_threads{8};
+    int64_t slow5_batchsize{4000};
+    std::unordered_set<std::string> m_slow5_aux_fields{};
 };
 
 }  // namespace dorado::data_loader

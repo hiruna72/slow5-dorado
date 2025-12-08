@@ -154,7 +154,7 @@ int duplex(int argc, char* argv[]) {
     parser.add_argument("model").help(
             "Model selection {fast,hac,sup}@v{version} for automatic model selection including "
             "modbases, or path to existing model directory.");
-    parser.add_argument("reads").help("Reads in POD5 format or BAM/SAM format for basespace.");
+    parser.add_argument("reads").help("Reads in POD5/BLOW5 format or BAM/SAM format for basespace.");
 
     int verbosity = 0;
     parser.add_argument("-v", "--verbose")
@@ -170,7 +170,7 @@ int duplex(int argc, char* argv[]) {
     {
         parser.add_group("Input data arguments");
         parser.add_argument("-r", "--recursive")
-                .help("Recursively scan through directories to load POD5 files.")
+                .help("Recursively scan through directories to load POD5/BLOW5 files.")
                 .flag();
         parser.add_argument("-l", "--read-ids")
                 .help("A file with a newline-delimited list of reads to basecall. If not provided, "
@@ -257,6 +257,14 @@ int duplex(int argc, char* argv[]) {
             .help("Path to stereo model")
             .default_value(std::string(""));
 
+    parser.add_argument("--slow5-threads")
+            .default_value(default_parameters.slow5_threads)
+            .scan<'i', int32_t>()
+            .help("Number of slow5 threads used to read SLOW5/BLOW5");
+    parser.add_argument("--slow5-batchsize")
+            .default_value(default_parameters.slow5_batchsize)
+            .scan<'i', int64_t>()
+            .help("Batchsize used to read SLOW5/BLOW5");
     std::vector<std::string> args_excluding_mm2_opts{};
     auto mm2_option_string = alignment::mm2::extract_options_string_arg({argv, argv + argc},
                                                                         args_excluding_mm2_opts);
@@ -339,7 +347,7 @@ int duplex(int argc, char* argv[]) {
         gpu_names = utils::get_cuda_gpu_names(device);
 #endif
 
-        ProgressTracker tracker(ProgressTracker::Mode::DUPLEX, num_reads);
+        ProgressTracker tracker(ProgressTracker::Mode::DUPLEX, 0);
 
         std::vector<std::unique_ptr<hts_writer::IWriter>> writers;
         OutputMode writer_output_mode;
@@ -658,9 +666,11 @@ int duplex(int argc, char* argv[]) {
             // Write header as no read group info is needed.
             const auto& hts_writer_ref = pipeline->get_node_ref<WriterNode>(hts_writer);
             hts_writer_ref.set_shared_header(std::move(hdr));
-
+            
+            int32_t slow5_threads = parser.get<int32_t>("--slow5-threads");
+            int64_t slow5_batchsize = parser.get<int64_t>("--slow5-batchsize");
             data_loader::DataLoader loader(*pipeline, "cpu", num_devices, 0, std::move(read_list),
-                                           {});
+                                           {}, slow5_threads, slow5_batchsize);
             loader.add_read_initialiser(client_info_init_func);
 
             stats_sampler = std::make_unique<dorado::stats::StatsSampler>(

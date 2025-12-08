@@ -36,6 +36,14 @@ bool has_pod5_extension(const std::filesystem::directory_entry& entry) {
     return get_extension(entry) == ".pod5";
 }
 
+bool has_blow5_extension(const std::filesystem::path& path) {
+    return get_extension(path) == ".blow5" || get_extension(path) == ".slow5";
+}
+
+bool has_blow5_extension(const std::filesystem::directory_entry& entry) {
+    return get_extension(entry) == ".blow5" || get_extension(entry) == ".slow5";
+}
+
 bool has_write_permission(const fs::path& directory) {
     if (!fs::exists(directory)) {
         try {

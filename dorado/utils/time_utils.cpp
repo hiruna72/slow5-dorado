@@ -80,6 +80,17 @@ int64_t get_unix_time_ms_from_string_timestamp(const std::string& time_stamp) {
         ss >> date::parse("%FT%TZ", time_us);
     }
 
+    // If parsing failed, try the format with a space separator and timezone offset
+    if (ss.fail()) {
+        ss.clear();
+        ss.str(time_stamp);
+        ss >> date::parse("%F %T%Ez", time_us);
+    }
+
+    if (ss.fail()) {
+        throw std::invalid_argument("Invalid timestamp format: " + time_stamp);
+    }
+
     auto epoch = time_us.time_since_epoch();
     auto value = std::chrono::duration_cast<std::chrono::milliseconds>(epoch);
     return value.count();

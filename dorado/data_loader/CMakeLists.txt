@@ -7,10 +7,13 @@ dorado_add_library(
         DataLoader.h
     SOURCES_PRIVATE
         DataLoader.cpp
-    DEPENDS_PUBLIC
+        slow5_thread.h
+        slow5_thread.cpp
+        DEPENDS_PUBLIC
         cxxpool
         dorado_lib
     DEPENDS_PRIVATE
         pod5_libs
         spdlog::spdlog
+        slow5_lib
 )

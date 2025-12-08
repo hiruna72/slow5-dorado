@@ -9,6 +9,8 @@ set_target_properties(dorado
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
+set_target_properties(dorado PROPERTIES OUTPUT_NAME "slow5-dorado")
+
 if (MSVC)
     set_property(TARGET dorado APPEND PROPERTY LINK_OPTIONS "/ignore:4099")
 endif()

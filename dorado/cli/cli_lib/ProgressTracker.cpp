@@ -224,7 +224,7 @@ void ProgressTracker::update_progress_bar(const stats::NamedStats& stats) {
             internal_set_progress(progress, false);
         }
     } else {
-        if (!m_is_progress_reporting_disabled) {
+        if (utils::is_fd_tty(stderr) && !m_is_progress_reporting_disabled) {
             std::cerr << "\r> Output records written: " << m_num_simplex_reads_written;
             std::cerr << "\r";
         }

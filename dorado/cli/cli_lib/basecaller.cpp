@@ -124,13 +124,16 @@ struct BasecallerOptions {
     bool enable_read_splitting;
     bool estimate_poly_a;
     bool variable_chunk_sizes;
+
+    int32_t slow5_threads;
+    int64_t slow5_batchsize;
 };
 
 void set_dorado_basecaller_args(argparse::ArgumentParser& parser, int& verbosity) {
     parser.add_argument("model").help(
             "Model selection {fast,hac,sup}@v{version} for automatic model selection including "
             "modbases, or path to existing model directory.");
-    parser.add_argument("data").help("The data directory or POD5 file path.");
+    parser.add_argument("data").help("The data directory or POD5 and SLOW5/BLOW5 file path.");
 
     // Default "Optional arguments" group
     parser.add_argument("-v", "--verbose")
@@ -151,7 +154,15 @@ void set_dorado_basecaller_args(argparse::ArgumentParser& parser, int& verbosity
         parser.add_group("Input data arguments");
         parser.add_argument("-r", "--recursive")
                 .flag()
-                .help("Recursively scan through directories to load POD5 files.");
+                .help("Recursively scan through directories to load POD5 and SLOW5/BLOW5 files.");
+        parser.add_argument("--slow5-threads")
+            .default_value(default_parameters.slow5_threads)
+            .scan<'i', int32_t>()
+            .help("Number of slow5 threads used to read SLOW5/BLOW5");
+        parser.add_argument("--slow5-batchsize")
+            .default_value(default_parameters.slow5_batchsize)
+            .scan<'i', int64_t>()
+            .help("Batchsize used to read SLOW5/BLOW5");
         parser.add_argument("-l", "--read-ids")
                 .help("A file with a newline-delimited list of reads to basecall. If not provided, "
                       "all reads will be basecalled.")
@@ -944,7 +955,7 @@ void run(const BasecallerOptions& options,
                         ? num_reads
                         : std::min(num_reads, static_cast<size_t>(options.max_reads));
 
-    ProgressTracker tracker(ProgressTracker::SIMPLEX, num_reads);
+    ProgressTracker tracker(ProgressTracker::SIMPLEX, 0);
 
     auto [num_devices, runners, modbase_runners] = create_runners(
             options, model_config, models.get_modbase_model_paths(), num_runners, modbase_params);
@@ -1030,7 +1041,8 @@ void run(const BasecallerOptions& options,
     {
         data_loader::DataLoader loader(*pipeline, "cpu", thread_allocations.loader_threads,
                                        options.max_reads, std::move(read_list),
-                                       std::move(reads_already_processed));
+                                       std::move(reads_already_processed),
+                                       options.slow5_threads, options.slow5_batchsize);
         loader.add_read_initialiser(
                 [client_info](ReadCommon& read) { read.client_info = client_info; });
         loader.add_read_initialiser(
@@ -1200,6 +1212,8 @@ int basecaller(int argc, char* argv[]) {
                 .enable_read_splitting = !parser.get<bool>("--disable-read-splitting"),
                 .estimate_poly_a = estimate_poly_a,
                 .variable_chunk_sizes = !parser.get<bool>("--disable-variable-chunk-sizes"),
+                .slow5_threads = parser.get<int32_t>("--slow5-threads"),
+                .slow5_batchsize = parser.get<int64_t>("--slow5-batchsize"),
         };
         run(options, args, models, default_parameters.num_runners,
             utils::load_read_list(parser.get<std::string>("--read-ids")), *minimap_options,

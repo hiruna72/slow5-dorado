@@ -43,3 +43,6 @@
 [submodule "dorado/3rdparty/CxxUrl"]
 	path = dorado/3rdparty/CxxUrl
 	url = https://github.com/chmike/CxxUrl
+[submodule "dorado/3rdparty/slow5lib"]
+	path = dorado/3rdparty/slow5lib
+	url = https://github.com/hasindu2008/slow5lib.git
