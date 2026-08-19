@@ -34,6 +34,7 @@ enum class Flowcell {
     FLO_PRO114,
     FLO_PRO114HD,
     FLO_PRO114M,
+    FLO_PRO114P,
     UNKNOWN,
 };
 
@@ -210,6 +211,7 @@ enum class Chemistry {
     DNA_R10_4_1_E8_2_APK_5KHZ,
     DNA_R10_4_1_E8_2_400BPS_4KHZ,
     DNA_R10_4_1_E8_2_400BPS_5KHZ,
+    DNA_R10_4_1_E8_2_400BPS_PROM_PLUS,
     RNA002_70BPS,
     RNA004_130BPS,
     UNKNOWN,

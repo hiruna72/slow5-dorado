@@ -321,6 +321,21 @@ const std::vector<ModelInfo> models = {
                 ModelType::SIMPLEX,
                 ModelVariantPair{ModelVariant::HAC, VV::v6_0_0},
         },
+        // PromPlus
+        ModelInfo{
+                "dna_r10.4.1_e8.2_400bps_prom_plus_fast@v1",
+                "cdd91e0f3b9778bf2b40d16a427a773076c96100eac3c08d9a302c83144a5e22",
+                CC::DNA_R10_4_1_E8_2_400BPS_PROM_PLUS,
+                ModelType::SIMPLEX,
+                ModelVariantPair{ModelVariant::FAST, VV::v1_0_0},
+        },
+        ModelInfo{
+                "dna_r10.4.1_e8.2_400bps_prom_plus_hac@v1",
+                "a4565a237c343f4a384c5bf79f9f935673a10506d38abb1e2982c8d6c5491e40",
+                CC::DNA_R10_4_1_E8_2_400BPS_PROM_PLUS,
+                ModelType::SIMPLEX,
+                ModelVariantPair{ModelVariant::HAC, VV::v1_0_0, true},
+        },
 
         // RNA004 v3.0.1
         ModelInfo{
@@ -1145,6 +1160,16 @@ const std::vector<ModelInfo> models = {
                 ModelType::MODBASE,
                 ModelVariantPair{ModelVariant::HAC, VV::v6_0_0},
                 ModsVariantPair{ModsVariant::M_6mA, VV::v1_0_0},
+        },
+        // PromPlus
+        // 5mC+5hmC CG-context HAC
+        ModelInfo{
+                "dna_r10.4.1_e8.2_400bps_prom_plus_hac@v1_5mCG_5hmCG@v1",
+                "2aa787d412d8d488ffbd94af534fb7e062976beeb9d39c0b9e5e9e2241f13ad2",
+                CC::DNA_R10_4_1_E8_2_400BPS_PROM_PLUS,
+                ModelType::MODBASE,
+                ModelVariantPair{ModelVariant::HAC, VV::v1_0_0},
+                ModsVariantPair{ModsVariant::M_5mCG_5hmCG, VV::v1_0_0},
         },
 
         // RNA004 v3.0.1

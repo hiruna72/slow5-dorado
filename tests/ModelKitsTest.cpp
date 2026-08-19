@@ -32,6 +32,7 @@ CATCH_TEST_CASE(TEST_TAG " FlowcellCode enumeration", TEST_TAG) {
         CATCH_CHECK(to_string(Flowcell::FLO_PRO114) == "FLO-PRO114");
         CATCH_CHECK(to_string(Flowcell::FLO_PRO114HD) == "FLO-PRO114HD");
         CATCH_CHECK(to_string(Flowcell::FLO_PRO114M) == "FLO-PRO114M");
+        CATCH_CHECK(to_string(Flowcell::FLO_PRO114P) == "FLO-PRO114P");
         CATCH_CHECK(to_string(Flowcell::UNKNOWN) == "__UNKNOWN_FLOWCELL__");
         CATCH_CHECK(fcs.size() == static_cast<size_t>(Flowcell::UNKNOWN) + 1);
     }

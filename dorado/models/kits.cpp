@@ -66,6 +66,7 @@ const std::unordered_map<Flowcell, FlowcellInfo> codes_map = {
         {FC::FLO_PRO114M,   {"FLO-PRO114M",   }},
         {FC::FLO_PRO114HD,  {"FLO-PRO114HD",  }}, 
         {FC::FLO_PRO114M,   {"FLO-PRO114M",   }},
+        {FC::FLO_PRO114P,   {"FLO-PRO114P",   }},
         {FC::UNKNOWN,       {"__UNKNOWN_FLOWCELL__", }}, 
 };
 // clang-format on
@@ -257,6 +258,10 @@ const KitSets sets_400bps = {{kit14::flowcells, kit14::kits_400bps}};
 const KitSets sets_260bps = {{kit14::flowcells, kit14::kits_260bps}};
 
 const KitSets sets_apk = {{kit14::flowcells, {KC::SQK_APK114}}};
+
+const KitSets sets_prom_plus = {{{FC::FLO_PRO114P},
+                                 {KC::SQK_LSK114, KC::SQK_LSK114_XL, KC::SQK_HTB114_96,
+                                  KC::SQK_NBD114_24, KC::SQK_NBD114_96, KC::SQK_ULK114}}};
 }  // namespace kit14
 
 namespace kit10 {
@@ -377,6 +382,9 @@ const std::unordered_map<Chemistry, ChemistryKits> kit_map = {
         {Chemistry::DNA_R10_4_1_E8_2_400BPS_5KHZ,
          {"dna_r10.4.1_e8.2_400bps_5khz", 5000, SampleType::DNA, kit_sets::kit14::sets_400bps_5khz,
           false}},
+        {Chemistry::DNA_R10_4_1_E8_2_400BPS_PROM_PLUS,
+         {"dna_r10.4.1_e8.2_400bps_prom_plus", 5000, SampleType::DNA,
+          kit_sets::kit14::sets_prom_plus, false}},
         {Chemistry::RNA002_70BPS,
          {"rna002_70bps", 3000, SampleType::RNA002, kit_sets::rna002::sets, true}},
         {Chemistry::RNA004_130BPS,

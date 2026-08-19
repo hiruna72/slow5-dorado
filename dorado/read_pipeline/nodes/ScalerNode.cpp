@@ -126,7 +126,7 @@ std::unordered_map<FC, float> flowcell_expected_pore_levels{
         {FC::FLO_MIN004RA, pore_level_rna004_min}, {FC::FLO_PRO004RA, pore_level_rna004_prom},
         {FC::FLO_MIN114, pore_level_kit14_min},    {FC::FLO_MIN114HD, pore_level_kit14_min},
         {FC::FLO_PRO114, pore_level_kit14_prom},   {FC::FLO_PRO114HD, pore_level_kit14_prom},
-        {FC::FLO_PRO114M, pore_level_kit14_prom},
+        {FC::FLO_PRO114M, pore_level_kit14_prom},  {FC::FLO_PRO114P, pore_level_kit14_prom},
 };
 
 std::optional<float> get_expected_open_pore_level(const std::string& flow_cell_code) {
