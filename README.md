@@ -15,7 +15,7 @@ If you encounter any problems building or running sow5-dorado please [report an 
 Binaries are provided for Linux x64 under [Releases](https://github.com/hiruna72/slow5-dorado/releases/).
 
 ```
-VERSION=v2.0.0
+VERSION=v1.3.3
 wget https://github.com/hiruna72/slow5-dorado/releases/download/$VERSION/slow5-dorado-$VERSION-x86_64-linux.tar.xz && tar -xvf slow5-dorado-$VERSION-x86_64-linux.tar.xz && cd slow5-dorado/bin
 ./slow5-dorado --version
 ```
@@ -25,7 +25,7 @@ wget https://github.com/hiruna72/slow5-dorado/releases/download/$VERSION/slow5-d
 To run slow5-dorado, download a model and point it to S/BLOW5 files. All dorado commands work in slow5-dorado. Important ones are highlighted below.
 
 ```
-MODEL="dna_r10.4.1_e8.2_400bps_hac@v6.0.0"
+MODEL="dna_r10.4.1_e8.2_400bps_prom_plus_hac@v1"
 $ slow5-dorado download --model $MODEL
 $ slow5-dorado basecaller $MODEL BLOW5_dir/ > calls.bam # blow5 directory
 $ slow5-dorado basecaller $MODEL reads.blow5 >calls.bam # a single merged BLOW5 file
